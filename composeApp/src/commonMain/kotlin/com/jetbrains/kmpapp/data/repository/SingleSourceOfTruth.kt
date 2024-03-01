@@ -40,7 +40,15 @@ internal fun  singleSourceOfTruth (
     saveDataToLocal: suspend (List<Result?>) -> Unit,
 ): Flow<Response<List<Result?>>> = flow {
     val localData = getResponse { getLocalData() }
-    if (localData is Response.Success && localData.data.isNotEmpty()) {
+    var locData:List<Result?>?=null
+    when(localData){
+        is Response.Error -> TODO()
+        Response.Loading -> TODO()
+        is Response.Success -> {
+            locData=localData.data!!
+        }
+    }
+    if ( locData.isNotEmpty()) {
         Napier.d("InLocalSSOt")
         emit(localData)
     } else {

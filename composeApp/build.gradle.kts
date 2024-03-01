@@ -72,7 +72,7 @@ kotlin {
             implementation(libs.voyager.koin)
             implementation(libs.moko.resources.compose)
             implementation(libs.sqlDelight.extensions)
-
+            implementation(libs.androidx.datastore.preferences.core)
         }
 
     }

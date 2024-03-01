@@ -17,16 +17,16 @@ class RepositoryImpl(
     private val LocalDataSource: ILocalData,
    // private val preferenceDataStore: PreferenceDataStore
 ) : IRepository {
-//    override suspend fun getRickAndMortyList(): Flow<Response<List<Result?>>> =
-//        singleSourceOfTruth(
-//            getLocalData = { getDataFromLocalDataSource() },
-//            getRemoteData = {
-//                getDataFromRemote()
-//            },
-//            saveDataToLocal = {
-//               putDataInLocal(it)
-//            }
-//        )
+    override suspend fun getRickAndMortyList(): Flow<Response<List<Result?>>> =
+        singleSourceOfTruth(
+            getLocalData = { getDataFromLocalDataSource() },
+            getRemoteData = {
+                getDataFromRemote()
+            },
+            saveDataToLocal = {
+               putDataInLocal(it)
+            }
+        )
 
 
     private suspend fun getDataFromRemote(): List<Result?> {
@@ -48,20 +48,25 @@ class RepositoryImpl(
 
     private suspend fun getDataFromLocalDataSource(): List<Result> {
         val resultList = mutableListOf<Result>()
+
         try {
-            val data = LocalDataSource.getCharacterByIDFromLocal(1).collect {
-                it?.name
-            }
-            Napier.e("Data in Local: $data")
             LocalDataSource.getCharactersFromLocal().collect { result ->
-                result?.let { resultList.addAll(it.filterNotNull()) }
+                result?.let {
+                    Napier.e("Data in Local: ${result[0]?.name}")
+                    resultList.addAll(it.filterNotNull())
+                    Napier.e("Data in Local 2: ${resultList[0].name}")
+                }
             }
         } catch (e: Exception) {
             Napier.e("Error fetching data from local data source: $e")
         }
-        Napier.i(resultList[0].name)
+
+        Napier.e("Data in Local3: ${resultList.joinToString { it.name }}")
+
         return resultList
     }
+
+
 
     private suspend fun putDataInLocal(list: List<Result?>) {
         Napier.i("Data in Local saved")
@@ -72,11 +77,11 @@ class RepositoryImpl(
         LocalDataSource.deleteAllData()
     }
 
-    override suspend fun getRickAndMortyList(): Response<List<RickAndMortyData?>> {
-        var data:Response<List<RickAndMortyData?>>?=null
-        data=RemoteDataSource.getCharactersFromApi()
-        return data
-    }
+//    override suspend fun getRickAndMortyList(): Response<List<RickAndMortyData?>> {
+//        var data:Response<List<RickAndMortyData?>>?=null
+//        data=RemoteDataSource.getCharactersFromApi()
+//        return data
+//    }
 
 
 }

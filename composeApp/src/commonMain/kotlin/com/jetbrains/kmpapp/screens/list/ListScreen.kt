@@ -87,7 +87,7 @@ data object ListScreen : Screen {
                     AnimatedContent(objects) { objectsAvailable ->
                         if (objectsAvailable!!.isNotEmpty()) {
                             ObjectGrid(
-                                objects =objects[0]!!.results!!,
+                                objects =objects,
                                 onObjectClick = { objectId ->
                                     navigator.push(DetailScreen(objectId))
                                 }

@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -33,43 +34,48 @@ class ListScreenModel(private val repo: IRepository) : ScreenModel
 
     private val coroutineContext: CoroutineContext = Dispatchers.Default
 
-
+//    private val _data: MutableStateFlow<Response<List<RickAndMortyData?>>> =
+//        MutableStateFlow(Response.Loading)
+//    val data: StateFlow<Response<List<RickAndMortyData?>>> = _data
 //        val objects: StateFlow<List<RickAndMortyData>> =
 //        rickAndMortyRepository.getObjects()
 //            .stateIn(screenModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
-    private val _data: MutableStateFlow<Response<List<RickAndMortyData?>>> =
+    private val _data: MutableStateFlow<Response<List<Result?>>> =
         MutableStateFlow(Response.Loading)
-    val data: StateFlow<Response<List<RickAndMortyData?>>> = _data
+    val data: StateFlow<Response<List<Result?>>> = _data
 
     init {
         fetchData()
     }
-//    fun fetchData() {
-//        screenModelScope.launch {
-//            try {
-//                val result = getResponse {
-//                    repo.getRickAndMortyList()
-//                }
-//                _data.emit(result)
-//            } catch (e: Exception) {
-//                _data.emit(Response.Error("Error", e))
-//            }
-//        }
-//    }
-
-
-
-
-
-
-
     fun fetchData() {
         CoroutineScope(coroutineContext).launch {
-          val data= repo.getRickAndMortyList()
+            try {
 
-            _data.tryEmit(data)
+                val data = repo.getRickAndMortyList()
+                data.collect { result ->
+                    _data.value = result
+                    Napier.e(data.toString()+"fetchdata")
+                }
+
+            } catch (e: Exception) {
+                _data.value = Response.Error("Error", e)
+            }
         }
     }
+
+
+
+
+
+
+
+//    fun fetchData() {
+//        CoroutineScope(coroutineContext).launch {
+//          val data= repo.getRickAndMortyList()
+//
+//            _data.tryEmit(data)
+//        }
+//    }
 
 //fun fetchData() {
 //        CoroutineScope(coroutineContext) .launch {

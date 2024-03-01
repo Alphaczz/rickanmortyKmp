@@ -9,6 +9,7 @@ import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
 class SharedDatabase(databaseDriverFactory: DatabaseDriverFactory) {
@@ -43,13 +44,13 @@ class SharedDatabase(databaseDriverFactory: DatabaseDriverFactory) {
     fun deleteALl(){
         database?.rickandMortyDbQueries?.DELETE_ALL_RESULTS()
     }
-     fun getAllItems(): Flow<List<com.jetbrains.kmpapp.model.Result>>? =
-        database?.rickandMortyDbQueries?.SELECT_ALL_RESULTS()
-            ?.asFlow()
-            ?.mapToList(Dispatchers.Main)?.map { resultList ->
-                resultList.map { it.toDomainModel() }
-            }
-
+    fun getAllItems(): Flow<List<com.jetbrains.kmpapp.model.Result>> = flow {
+        val resultList = mutableListOf<com.jetbrains.kmpapp.model.Result>()
+        database?.rickandMortyDbQueries?.SELECT_ALL_RESULTS()?.executeAsList()?.forEach { result ->
+            resultList.add(result.toDomainModel())
+        }
+        emit(resultList)
+    }
 
     fun getItemById(id: Long): Flow<com.jetbrains.kmpapp.model.Result?>? =
         database?.rickandMortyDbQueries?.SELECT_RESULT_BY_ID(id)
