@@ -1,0 +1,51 @@
+-- RickAndMortyData.sq
+
+-- Define a table for storing Result objects
+CREATE TABLE Result (
+    created TEXT NOT NULL,
+    episode TEXT NOT NULL,
+    gender TEXT NOT NULL,
+    id INTEGER PRIMARY KEY ,
+    image TEXT NOT NULL,
+    location_name TEXT NOT NULL,
+    location_url TEXT NOT NULL,
+    name TEXT NOT NULL,
+    origin_name TEXT NOT NULL,
+    origin_url TEXT NOT NULL,
+    species TEXT NOT NULL,
+    status TEXT NOT NULL,
+    type TEXT NOT NULL,
+    url TEXT NOT NULL
+);
+
+-- Insert a new Result object into the table
+INSERT_RESULT:
+INSERT INTO Result (
+    created,
+    episode,
+    gender,
+    id ,
+    image,
+    location_name,
+    location_url,
+    name,
+    origin_name,
+    origin_url,
+    species,
+    status,
+    type,
+    url
+) VALUES (
+    ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+);
+
+-- Select all Result objects from the table
+SELECT_ALL_RESULTS:
+SELECT * FROM Result;
+
+-- Select a Result object by ID from the table
+SELECT_RESULT_BY_ID:
+SELECT * FROM Result WHERE id = ?;
+
+DELETE_ALL_RESULTS:
+DELETE FROM Result;
