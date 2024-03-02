@@ -24,6 +24,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,14 +47,23 @@ import dev.icerock.moko.resources.compose.colorResource
 import io.github.aakira.napier.Napier
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import kotlinx.coroutines.delay
 
 data object ListScreen : Screen {
+
+
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel: ListScreenModel = getScreenModel()
         val dataState by screenModel.data.collectAsState(Response.Loading)
-
+        var refreshing by remember { mutableStateOf(false) }
+        LaunchedEffect(refreshing) {
+            if (refreshing) {
+                delay(3000)
+                refreshing = false
+            }
+        }
         LaunchedEffect(dataState) {
             // This block will be executed whenever dataState changes
             when (dataState) {
@@ -117,7 +129,8 @@ private fun ObjectGrid(
 ) {
     LazyRow() {  }
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(120.dp),
+          columns = GridCells.Adaptive(130.dp),
+//        columns = GridCells.Fixed(2),
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(8.dp)
     ) {

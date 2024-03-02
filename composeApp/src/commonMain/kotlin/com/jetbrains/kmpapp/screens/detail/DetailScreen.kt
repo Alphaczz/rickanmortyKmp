@@ -2,6 +2,7 @@ package com.jetbrains.kmpapp.screens.detail
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.waterfallPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -24,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -52,12 +55,16 @@ data class DetailScreen(val objectId: Long) : Screen {
         val screenModel: DetailScreenModel = getScreenModel()
 
         val obj by screenModel.getObject(objectId).collectAsState(initial = null)
-
-        AnimatedContent(obj != null) { objectAvailable ->
-            if (objectAvailable) {
-                ObjectDetails(obj!!, onBackClick = { navigator.pop() })
-            } else {
-                EmptyScreenContent(Modifier.fillMaxSize())
+        Box(modifier = Modifier.fillMaxSize()) {
+            AnimatedContent(obj != null) { objectAvailable ->
+                if (objectAvailable) {
+                    ObjectDetails(obj!!, onBackClick = { navigator.pop() })
+                } else {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center),
+                        color = colorResource(MR.colors.secondary) // Change the color to your desired color
+                    )
+                }
             }
         }
     }
@@ -92,6 +99,7 @@ private fun ObjectDetails(
                     .fillMaxWidth().padding(8.dp)
                     .background(Color.LightGray).waterfallPadding()
             )
+
 
             SelectionContainer {
                 Column(Modifier.padding(12.dp)) {

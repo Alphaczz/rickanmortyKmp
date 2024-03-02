@@ -79,7 +79,7 @@ class ListScreenModel(private val repo: IRepository,private val remote:IRemoteDa
 //         try {
 //             val isSync=repo.isSync()
 //             if (isSync){
-//                 fetchData()
+//                remote.getCharactersFromApi()
 //             }
 //         } catch (e: Exception) {
 //             _data.value = Response.Error("Error", e)
