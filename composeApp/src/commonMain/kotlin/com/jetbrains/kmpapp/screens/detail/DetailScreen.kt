@@ -21,6 +21,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -44,13 +45,14 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 
-data class DetailScreen(val objectId: Int) : Screen {
+data class DetailScreen(val objectId: Long) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel: DetailScreenModel = getScreenModel()
 
         val obj by screenModel.getObject(objectId).collectAsState(initial = null)
+
         AnimatedContent(obj != null) { objectAvailable ->
             if (objectAvailable) {
                 ObjectDetails(obj!!, onBackClick = { navigator.pop() })

@@ -13,7 +13,7 @@ class localDataImpl(
         return sharedDatabase.getAllItems()!!
     }
 
-    override suspend fun getCharacterByIDFromLocal(id: Long): Flow<Result?> {
+    override fun getCharacterByIDFromLocal(id: Long): Flow<Result?> {
        return sharedDatabase.getItemById(id)!!
     }
 

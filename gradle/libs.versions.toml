@@ -2,7 +2,7 @@
 compose-compiler = "1.5.5"
 compose-plugin = "1.5.12"
 agp = "8.2.2"
-datastorePreferencesCore = "1.0.0"
+datastorePreferencesCore = "1.1.0-alpha06"
 koinCore = "3.2.0"
 napier = "2.7.1"
 android-minSdk = "24"
@@ -20,6 +20,8 @@ moko-resources = "0.23.0"
 lifecycleViewmodelCompose = "2.7.0"
 lifecycleLivedataCoreKtx = "2.7.0"
 sqlDelight = "2.0.0-alpha05"
+datastoreCore = "1.0.0"
+androidx-startup = "1.1.1"
 
 [libraries]
 androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastorePreferencesCore" }
@@ -35,6 +37,7 @@ koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinComp
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+androidx-startup = { module = "androidx.startup:startup-runtime", version.ref = "androidx-startup" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
@@ -48,6 +51,7 @@ sqlDelight-driver-android = { module = "app.cash.sqldelight:android-driver", ver
 sqlDelight-driver-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
 sqlDelight-driver-sqljs = { module = "app.cash.sqldelight:sqljs-driver", version.ref = "sqlDelight" }
 sqlDelight-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
+androidx-datastore-core = { group = "androidx.datastore", name = "datastore-core", version.ref = "datastoreCore" }
 
 
 [plugins]

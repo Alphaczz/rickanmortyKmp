@@ -17,6 +17,7 @@ import io.ktor.http.ContentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
+import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
@@ -84,6 +85,7 @@ val appModule = module {
 
 
 }
+
 val repositoryModule = module {
     //single<IRepository> { RepositoryImp(get(), get()) }
     single<IRemoteData> { RemoteDataimpl(get()) }

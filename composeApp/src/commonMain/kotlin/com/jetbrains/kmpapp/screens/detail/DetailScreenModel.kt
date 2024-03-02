@@ -6,8 +6,8 @@ import com.jetbrains.kmpapp.data.rickAndMortyRepository
 import com.jetbrains.kmpapp.model.Result
 import kotlinx.coroutines.flow.Flow
 
-class DetailScreenModel(private val rickAndMortyRepository: rickAndMortyRepository
+class DetailScreenModel(private val repository: IRepository
 ) : ScreenModel {
-    fun getObject(objectId: Int): Flow<Result?> =
-        rickAndMortyRepository.getObjectById(objectId)
+     fun getObject(objectId: Long): Flow<Result?> =
+        repository.getByObjectId(objectId)
 }

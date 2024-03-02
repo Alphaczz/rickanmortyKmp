@@ -11,6 +11,7 @@ import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 class RepositoryImpl(
     private val RemoteDataSource: IRemoteData,
@@ -27,6 +28,25 @@ class RepositoryImpl(
                putDataInLocal(it)
             }
         )
+
+    override suspend fun isSync():Boolean {
+        val localData = getDataFromLocalDataSource()
+        val remoteDataResponse = getResponse { getDataFromRemote() }
+
+        if (remoteDataResponse is Response.Success) {
+            val remoteData = remoteDataResponse.data
+
+            if (localData != remoteData) {
+                putDataInLocal(remoteData)
+               return true
+            }
+        }
+        return false
+    }
+
+    override fun getByObjectId(id: Long): Flow<Result?> {
+        return LocalDataSource.getCharacterByIDFromLocal(id)
+    }
 
 
     private suspend fun getDataFromRemote(): List<Result?> {
@@ -45,6 +65,8 @@ class RepositoryImpl(
         // Save data to local
 
     }
+
+
 
     private suspend fun getDataFromLocalDataSource(): List<Result> {
         val resultList = mutableListOf<Result>()

@@ -89,7 +89,7 @@ data object ListScreen : Screen {
                             ObjectGrid(
                                 objects =objects,
                                 onObjectClick = { objectId ->
-                                    navigator.push(DetailScreen(objectId))
+                                    navigator.push(DetailScreen(objectId.toLong()))
                                 }
                             )
                         } else {

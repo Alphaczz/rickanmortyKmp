@@ -7,4 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface IRepository {
     suspend fun getRickAndMortyList(): Flow<Response<List<Result?>>>
+    suspend fun isSync():Boolean
+    fun getByObjectId(id:Long):Flow<Result?>
 }

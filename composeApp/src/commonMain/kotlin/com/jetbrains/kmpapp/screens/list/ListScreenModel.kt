@@ -5,6 +5,7 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.jetbrains.kmpapp.data.RickAndMortyApi
 import com.jetbrains.kmpapp.data.repository.IRepository
+import com.jetbrains.kmpapp.data.repository.remoteRepo.IRemoteData
 import com.jetbrains.kmpapp.model.RickAndMortyData
 import com.jetbrains.kmpapp.data.rickAndMortyRepository
 import com.jetbrains.kmpapp.model.Result
@@ -13,6 +14,7 @@ import com.jetbrains.kmpapp.utils.getResponse
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,11 +31,11 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.coroutineContext
 
-class ListScreenModel(private val repo: IRepository) : ScreenModel
+class ListScreenModel(private val repo: IRepository,private val remote:IRemoteData) : ScreenModel
 {
 
     private val coroutineContext: CoroutineContext = Dispatchers.Default
-
+    private val refreshIntervalMillis: Long = 60000
 //    private val _data: MutableStateFlow<Response<List<RickAndMortyData?>>> =
 //        MutableStateFlow(Response.Loading)
 //    val data: StateFlow<Response<List<RickAndMortyData?>>> = _data
@@ -46,6 +48,7 @@ class ListScreenModel(private val repo: IRepository) : ScreenModel
 
     init {
         fetchData()
+        //startAutoRefresh()
     }
     fun fetchData() {
         CoroutineScope(coroutineContext).launch {
@@ -62,7 +65,27 @@ class ListScreenModel(private val repo: IRepository) : ScreenModel
             }
         }
     }
-
+//    private fun startAutoRefresh() {
+//        CoroutineScope(coroutineContext).launch {
+//            while (true) {
+//                Napier.i("Refreshing.......")
+//                refresh()
+//                delay(refreshIntervalMillis)
+//            }
+//        }
+//    }
+// fun refresh(){
+//     CoroutineScope(coroutineContext).launch {
+//         try {
+//             val isSync=repo.isSync()
+//             if (isSync){
+//                 fetchData()
+//             }
+//         } catch (e: Exception) {
+//             _data.value = Response.Error("Error", e)
+//         }
+//     }
+// }
 
 
 
