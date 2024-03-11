@@ -69,6 +69,7 @@ data class DetailScreen(val objectId: Long) : Screen {
         }
     }
 }
+//sample push
 
 @Composable
 private fun ObjectDetails(
