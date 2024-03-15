@@ -2,36 +2,19 @@ package com.jetbrains.kmpapp.screens.list
 
 
 import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
-import com.jetbrains.kmpapp.data.RickAndMortyApi
-import com.jetbrains.kmpapp.data.repository.IRepository
-import com.jetbrains.kmpapp.data.repository.remoteRepo.IRemoteData
-import com.jetbrains.kmpapp.model.RickAndMortyData
-import com.jetbrains.kmpapp.data.rickAndMortyRepository
+import com.jetbrains.kmpapp.domain.repository.IRepository
+import com.jetbrains.kmpapp.data.dataSource.remoteDataSource.IRemoteData
 import com.jetbrains.kmpapp.model.Result
 import com.jetbrains.kmpapp.utils.Response
-import com.jetbrains.kmpapp.utils.getResponse
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.coroutineContext
 
-class ListScreenModel(private val repo: IRepository,private val remote:IRemoteData) : ScreenModel
+class ListScreenModel(private val repo: IRepository, private val remote: IRemoteData) : ScreenModel
 {
 
     private val coroutineContext: CoroutineContext = Dispatchers.Default
@@ -48,12 +31,41 @@ class ListScreenModel(private val repo: IRepository,private val remote:IRemoteDa
 
     init {
         fetchData()
+        getdata()
+        getDataFromIEndPoint()
         //startAutoRefresh()
+    }
+    fun getDataFromIEndPoint(){
+        CoroutineScope(coroutineContext).launch {
+            val check= repo.iendpoint()
+           // Napier.e((check?:"" ) +"endpointimpl")
+//            when (check){
+//                is Response.Error -> TODO()
+//                Response.Loading -> TODO()
+//                is Response.Success -> {
+//                    Napier.e((check.data.get(0).results?.get(0)?.name ?:"" ) +"endpointimpl")
+//                }
+//
+//            }
+        }
+    }
+    fun getdata(){
+        CoroutineScope(coroutineContext).launch {
+            val check= remote.postObjectToApi()
+            Napier.e((check?:"" ) +"endpointimpl")
+//            when (check){
+//                is Response.Error -> TODO()
+//                Response.Loading -> TODO()
+//                is Response.Success -> {
+//                    Napier.e((check.data.get(0).results?.get(0)?.name ?:"" ) +"endpointimpl")
+//                }
+//
+//            }
+        }
     }
     fun fetchData() {
         CoroutineScope(coroutineContext).launch {
             try {
-
                 val data = repo.getRickAndMortyList()
                 data.collect { result ->
                     _data.value = result

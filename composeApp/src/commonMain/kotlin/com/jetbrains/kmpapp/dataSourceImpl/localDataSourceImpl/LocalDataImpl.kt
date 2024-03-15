@@ -1,6 +1,7 @@
-package com.jetbrains.kmpapp.data.repository.localRepo
+package com.jetbrains.kmpapp.dataSourceImpl.localDataSourceImpl
 
-import com.jetbrains.kmpapp.data.repository.localRepo.sqldelight.SharedDatabase
+import com.jetbrains.kmpapp.data.dataSource.localDataSource.ILocalData
+import com.jetbrains.kmpapp.data.db.SharedDatabase
 import com.jetbrains.kmpapp.model.Result
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.Flow

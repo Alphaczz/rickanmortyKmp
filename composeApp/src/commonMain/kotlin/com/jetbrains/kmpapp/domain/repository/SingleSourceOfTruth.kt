@@ -1,4 +1,4 @@
-package com.jetbrains.kmpapp.data.repository
+package com.jetbrains.kmpapp.domain.repository
 
 
 

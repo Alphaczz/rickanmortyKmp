@@ -66,6 +66,7 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.logging)
             implementation(libs.napier)
             implementation(libs.kamel)
             implementation(libs.koin.compose)
@@ -136,7 +137,7 @@ sqldelight {
     databases {
         create("RickandMortyDb") {
             // https://cashapp.github.io/sqldelight
-            packageName.set("com.jetbrains.kmpapp.data.repository.localRepo.sqldelight")
+            packageName.set("schema.sqldelight")
             sourceFolders.set(listOf("kotlin"))
         }
     }

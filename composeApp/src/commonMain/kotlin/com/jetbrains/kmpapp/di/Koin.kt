@@ -1,23 +1,26 @@
 package com.jetbrains.kmpapp.di
 
 
-import com.jetbrains.kmpapp.data.repository.IRepository
-import com.jetbrains.kmpapp.data.repository.RepositoryImpl
-import com.jetbrains.kmpapp.data.repository.localRepo.ILocalData
-import com.jetbrains.kmpapp.data.repository.localRepo.localDataImpl
-import com.jetbrains.kmpapp.data.repository.localRepo.sqldelight.DatabaseDriverFactory
-import com.jetbrains.kmpapp.data.repository.localRepo.sqldelight.SharedDatabase
-import com.jetbrains.kmpapp.data.repository.remoteRepo.IRemoteData
-import com.jetbrains.kmpapp.data.repository.remoteRepo.RemoteDataimpl
+import BaseDataSource
+import com.jetbrains.kmpapp.data.network.EndPointsApiServiceImpl
+import com.jetbrains.kmpapp.data.network.IEndPoint
+import com.jetbrains.kmpapp.data.network.KtorHttpClient
+import com.jetbrains.kmpapp.domain.repository.IRepository
+import com.jetbrains.kmpapp.domain.repository.RepositoryImpl
+import com.jetbrains.kmpapp.data.dataSource.localDataSource.ILocalData
+import com.jetbrains.kmpapp.dataSourceImpl.localDataSourceImpl.localDataImpl
+import com.jetbrains.kmpapp.data.db.SharedDatabase
+import com.jetbrains.kmpapp.data.dataSource.remoteDataSource.IRemoteData
+import com.jetbrains.kmpapp.dataSourceImpl.remoteDataSourceImpl.RemoteDataImpl
 import com.jetbrains.kmpapp.screens.detail.DetailScreenModel
 import com.jetbrains.kmpapp.screens.list.ListScreenModel
+import com.jetbrains.kmpapp.utils.NetworkUtils
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.http.ContentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
-import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
@@ -28,12 +31,15 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
         modules(
             dataModule,
             screenModelsModule,
-            apiServiceModule,
+//            apiServiceModule,
             appModule,
             sqlDelightModule,
             repositoryModule,
-            platformModule()
-        )
+            platformModule(),
+            utilsModule,
+
+
+            )
     }
 
 val dataModule = module {
@@ -45,7 +51,12 @@ val dataModule = module {
             }
         }
     }
-    single<IRemoteData> { RemoteDataimpl(get()) }
+    single {
+        KtorHttpClient(get()) // Inject the HttpClient provided by Koin
+    }
+    //single<IRemoteData> { RemoteDataimpl(get()) }
+    single <IEndPoint> {EndPointsApiServiceImpl(get()) }
+
    // single<RickAndMortyApi> { RickAndMortyApiClient(get()) }
    // single<RickAndMortyStorage> { InMemoryRickAndMortyStorage() }
 //    single {
@@ -56,16 +67,16 @@ val dataModule = module {
 
 }
 
-val apiServiceModule = module {
-    single {
-        val json = Json { ignoreUnknownKeys = true }
-        RemoteDataimpl(HttpClient {
-            install(ContentNegotiation) {
-                json(json, contentType = ContentType.Any)
-            }
-        }) as IRemoteData
-    }
-}
+//val apiServiceModule = module {
+//    single {
+//        val json = Json { ignoreUnknownKeys = true }
+//        RemoteDataimpl(HttpClient {
+//            install(ContentNegotiation) {
+//                json(json, contentType = ContentType.Any)
+//            }
+//        }) as IRemoteData
+//    }
+//}
 val screenModelsModule = module {
     factoryOf(::ListScreenModel)
     factoryOf(::DetailScreenModel)
@@ -74,23 +85,24 @@ val sqlDelightModule = module {
     single { SharedDatabase(get()) }
 }
 val appModule = module {
-
-    single {
+        single {
         SharedDatabase(
             databaseDriverFactory = get()
         )
     }
 
-
-
-
 }
-
+val utilsModule= module {
+    single { NetworkUtils() }
+    single {
+        BaseDataSource()
+    }
+}
 val repositoryModule = module {
     //single<IRepository> { RepositoryImp(get(), get()) }
-    single<IRemoteData> { RemoteDataimpl(get()) }
+    single<IRemoteData> { RemoteDataImpl(get()) }
     single <ILocalData>{ localDataImpl(get()) }
-    single <IRepository> { RepositoryImpl(get(),get()) }
+    single <IRepository> { RepositoryImpl(get(),get(),get()) }
    // single<IRemoteData> {  }
 
 

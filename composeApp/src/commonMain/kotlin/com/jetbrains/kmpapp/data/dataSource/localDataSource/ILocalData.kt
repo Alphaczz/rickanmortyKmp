@@ -1,4 +1,4 @@
-package com.jetbrains.kmpapp.data.repository.localRepo
+package com.jetbrains.kmpapp.data.dataSource.localDataSource
 
 import com.jetbrains.kmpapp.model.Result
 import com.jetbrains.kmpapp.model.RickAndMortyData

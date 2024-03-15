@@ -1,23 +1,21 @@
-package com.jetbrains.kmpapp.data.repository
+package com.jetbrains.kmpapp.domain.repository
 
-import com.jetbrains.kmpapp.data.repository.localRepo.ILocalData
-import com.jetbrains.kmpapp.data.repository.remoteRepo.IRemoteData
-import com.jetbrains.kmpapp.data.rickAndMortyRepository
+import BaseDataSource
+import com.jetbrains.kmpapp.data.network.IEndPoint
+import com.jetbrains.kmpapp.data.dataSource.localDataSource.ILocalData
+import com.jetbrains.kmpapp.data.dataSource.remoteDataSource.IRemoteData
 import com.jetbrains.kmpapp.model.Result
-import com.jetbrains.kmpapp.model.RickAndMortyData
 import com.jetbrains.kmpapp.utils.Response
 import com.jetbrains.kmpapp.utils.getResponse
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 
 class RepositoryImpl(
     private val RemoteDataSource: IRemoteData,
     private val LocalDataSource: ILocalData,
+    private val endPoint: IEndPoint
    // private val preferenceDataStore: PreferenceDataStore
-) : IRepository {
+) : BaseDataSource(), IRepository {
     override suspend fun getRickAndMortyList(): Flow<Response<List<Result?>>> =
         singleSourceOfTruth(
             getLocalData = { getDataFromLocalDataSource() },
@@ -28,7 +26,20 @@ class RepositoryImpl(
                putDataInLocal(it)
             }
         )
+    override  suspend fun iendpoint(){
+     val data = endPoint.getCharactersFromApi(onError = {
+         Napier.i ("", tag = "Internet")
+     })
+     when(data){
+         is Response.Error -> TODO()
+         Response.Loading -> TODO()
+         is Response.Success -> {
+             data.data[0].results?.get(0)?.let { Napier.i(it.name, tag = "Endpoint APi call") }
 
+
+         }
+     }
+ }
     override suspend fun isSync():Boolean {
         val localData = getDataFromLocalDataSource()
         val remoteDataResponse = getResponse { getDataFromRemote() }
@@ -51,7 +62,9 @@ class RepositoryImpl(
 
     private suspend fun getDataFromRemote(): List<Result?> {
         Napier.i("getDataFromRemote()")
-        val data = RemoteDataSource.getCharactersFromApi()
+        val data = RemoteDataSource.getCharactersFromApi(onError = {
+            Napier.i ("", tag = "Internet")
+        })
         when(data){
             is Response.Error -> TODO()
             Response.Loading -> TODO()

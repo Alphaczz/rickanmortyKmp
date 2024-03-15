@@ -1,17 +1,17 @@
-package com.jetbrains.kmpapp.data.repository.localRepo.sqldelight
+package com.jetbrains.kmpapp.data.db
 
 import app.cash.sqldelight.coroutines.asFlow
-import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOneOrNull
-import com.jetbrains.kmpapp.data.repository.localRepo.sqldelight.DatabaseDriverFactory
+import com.jetbrains.kmpapp.data.factory.DatabaseDriverFactory
 import com.jetbrains.kmpapp.model.Location
 import com.jetbrains.kmpapp.model.Origin
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import schema.sqldelight.Result
+import schema.sqldelight.RickandMortyDb
 
 class SharedDatabase(databaseDriverFactory: DatabaseDriverFactory) {
     private val driver = databaseDriverFactory.createDriver()

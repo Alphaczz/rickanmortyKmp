@@ -1,6 +1,8 @@
-package com.jetbrains.kmpapp.data.repository.remoteRepo
+package com.jetbrains.kmpapp.data.dataSource.remoteDataSource
 
+import ApiResult
 import com.jetbrains.kmpapp.data.RickAndMortyApi
+import com.jetbrains.kmpapp.data.network.KtorHttpClient
 import com.jetbrains.kmpapp.model.Result
 import com.jetbrains.kmpapp.model.RickAndMortyData
 import com.jetbrains.kmpapp.utils.Response
@@ -13,5 +15,6 @@ import kotlinx.serialization.json.Json
 import kotlin.coroutines.cancellation.CancellationException
 
 interface IRemoteData {
-  suspend fun getCharactersFromApi():  Response<List<RickAndMortyData>>
+  suspend fun getCharactersFromApi( onError: ((ApiResult<Any>) -> Unit)?):  Response<List<RickAndMortyData>>
+  suspend fun postObjectToApi(): String
 }
