@@ -1,5 +1,6 @@
 package com.jetbrains.kmpapp
 
+import ContextProvider
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,6 +14,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            //required to intialize applicationContext->ContentProvider.kt (using in InternetCheck )
+            //can be used in other functions which required context on android side
+            ContextProvider().create(applicationContext)
+
             App()
         }
     }

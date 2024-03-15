@@ -9,6 +9,7 @@ import com.jetbrains.kmpapp.utils.Response
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -33,7 +34,7 @@ class ListScreenModel(private val repo: IRepository, private val remote: IRemote
         fetchData()
         getdata()
         getDataFromIEndPoint()
-        //startAutoRefresh()
+        startAutoRefresh()
     }
     fun getDataFromIEndPoint(){
         CoroutineScope(coroutineContext).launch {
@@ -77,27 +78,38 @@ class ListScreenModel(private val repo: IRepository, private val remote: IRemote
             }
         }
     }
-//    private fun startAutoRefresh() {
-//        CoroutineScope(coroutineContext).launch {
-//            while (true) {
-//                Napier.i("Refreshing.......")
-//                refresh()
-//                delay(refreshIntervalMillis)
-//            }
-//        }
-//    }
-// fun refresh(){
-//     CoroutineScope(coroutineContext).launch {
-//         try {
-//             val isSync=repo.isSync()
-//             if (isSync){
-//                remote.getCharactersFromApi()
-//             }
-//         } catch (e: Exception) {
-//             _data.value = Response.Error("Error", e)
-//         }
-//     }
-// }
+    private fun startAutoRefresh() {
+        CoroutineScope(coroutineContext).launch {
+            Napier.i("Auto Refresh started")
+            while (true) {
+                Napier.i("Refreshing data...")
+                refresh()
+                delay(refreshIntervalMillis)
+            }
+        }
+    }
+
+    fun refresh(){
+     CoroutineScope(coroutineContext).launch {
+         try {
+             val isSync=repo.isSync()
+             if (isSync){
+                 Napier.i("Change in Data", tag = "IsSync")
+                 repo.getRickAndMortyList()
+                 data.collect { result ->
+                     _data.value = result
+                     Napier.e(data.toString()+"refreshed data")
+                 }
+//                remote.getCharactersFromApi(onError = {})
+
+             }else{
+                 Napier.i("No Change in Data", tag = "IsSync")
+             }
+         } catch (e: Exception) {
+             _data.value = Response.Error("Error", e)
+         }
+     }
+ }
 
 
 

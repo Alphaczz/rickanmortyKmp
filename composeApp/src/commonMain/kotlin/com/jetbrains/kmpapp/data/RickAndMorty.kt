@@ -9,6 +9,7 @@ import io.ktor.util.logging.Logger
 import io.ktor.utils.io.CancellationException
 import kotlinx.serialization.json.Json
 
+//Not in use
 interface RickAndMortyApi {
     suspend fun getData(): List<RickAndMortyData>
 }

@@ -16,6 +16,7 @@ class RickAndMorty :  Application() {
             androidContext(this@RickAndMorty)
             ApplicationComponent.init()
         }
+        //intialized napier
         initLogger()
 
 
@@ -23,16 +24,3 @@ class RickAndMorty :  Application() {
 
     }
 }
-@kotlinx.serialization.Serializable
-data class ObjectData(
-    val name: String,
-    val data: ObjectDetails
-)
-
-@Serializable
-data class ObjectDetails(
-    val year: Int,
-    val price: Double,
-    val cpuModel: String,
-    val hardDiskSize: String
-)

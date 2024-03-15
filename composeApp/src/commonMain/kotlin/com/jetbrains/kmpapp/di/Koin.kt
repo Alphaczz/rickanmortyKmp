@@ -55,7 +55,9 @@ val dataModule = module {
         KtorHttpClient(get()) // Inject the HttpClient provided by Koin
     }
     //single<IRemoteData> { RemoteDataimpl(get()) }
-    single <IEndPoint> {EndPointsApiServiceImpl(get()) }
+    single <IEndPoint> {
+        EndPointsApiServiceImpl(get())
+    }
 
    // single<RickAndMortyApi> { RickAndMortyApiClient(get()) }
    // single<RickAndMortyStorage> { InMemoryRickAndMortyStorage() }
@@ -102,7 +104,7 @@ val repositoryModule = module {
     //single<IRepository> { RepositoryImp(get(), get()) }
     single<IRemoteData> { RemoteDataImpl(get()) }
     single <ILocalData>{ localDataImpl(get()) }
-    single <IRepository> { RepositoryImpl(get(),get(),get()) }
+    single <IRepository> { RepositoryImpl(get(),get(),get(),get()) }
    // single<IRemoteData> {  }
 
 

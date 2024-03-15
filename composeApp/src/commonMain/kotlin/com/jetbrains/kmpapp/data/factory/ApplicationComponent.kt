@@ -1,5 +1,6 @@
 package com.jetbrains.kmpapp.data.factory
 
+//used in DataStore sharedPrefs
 object ApplicationComponent {
     private var _coreComponent: CoreComponent? = null
     val coreComponent
