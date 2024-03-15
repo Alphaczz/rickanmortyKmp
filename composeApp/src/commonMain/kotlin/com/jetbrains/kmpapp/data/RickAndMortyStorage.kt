@@ -5,7 +5,7 @@ import com.jetbrains.kmpapp.model.RickAndMortyData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
-
+//not using
 interface RickAndMortyStorage {
 
     fun getObjectById(objectId: Int): Flow<Result?>
