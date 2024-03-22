@@ -78,11 +78,11 @@ class RemoteDataImpl(private val ktorHttpClient: KtorHttpClient) : IRemoteData,B
         }
     }
     override suspend fun getCharactersFromApi(onError: ((ApiResult<Any>) -> Unit)?): Response<List<RickAndMortyData>> {
-        val apiResult = apiCall {
+        val apiResult = apiCall( executable = {
             getResponse {
                 listOf(ktorHttpClient.get<RickAndMortyData>("$API_URL/character"))
             }
-        }
+        })
         return if (apiResult.resultType == ApiResultType.SUCCESS) {
                  apiResult.data!!
         } else {

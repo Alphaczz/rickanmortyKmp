@@ -28,6 +28,7 @@ kotlin {
         }
     }
 
+
     sourceSets {
         // Required for moko-resources to work
         applyDefaultHierarchyTemplate()
@@ -76,7 +77,35 @@ kotlin {
             implementation(libs.sqlDelight.extensions)
             implementation(libs.moko.resources.compose)
             implementation(libs.androidx.datastore.preferences.core)
+            val voyagerVersion = "1.0.0-rc07"
+            implementation(libs.accompanist.permissions)
 
+            implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
+
+            // Allows us to use tab navigation for the bottom bar
+            implementation("cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion")
+
+            // Support for transition animations
+            implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
+            //image picker
+            implementation(libs.peekaboo.ui)
+
+            // peekaboo-image-picker
+            implementation(libs.peekaboo.image.picker)
+            implementation("com.darkrockstudios:mpfilepicker:3.1.0")
+
+            // Moko Permissions
+            implementation("dev.icerock.moko:permissions:0.17.0")
+
+            // Moko Permissions Compose
+            implementation("dev.icerock.moko:permissions-compose:0.17.0")
+
+            // Moko Media Compose
+            implementation("dev.icerock.moko:media-compose:0.11.0")
+            implementation("dev.icerock.moko:media:0.11.0")
+
+            // Compose Multiplatform
+            implementation("dev.icerock.moko:media-test:0.11.0")
         }
 
     }
@@ -113,6 +142,8 @@ android {
             isMinifyEnabled = false
         }
     }
+
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8

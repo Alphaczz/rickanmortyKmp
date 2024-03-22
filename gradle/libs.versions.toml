@@ -5,6 +5,7 @@ agp = "8.2.2"
 datastorePreferencesCore = "1.1.0-alpha06"
 koinCore = "3.2.0"
 napier = "2.7.1"
+peekaboo = "0.5.1"
 android-minSdk = "24"
 android-compileSdk = "34"
 android-targetSdk = "34"
@@ -22,6 +23,7 @@ lifecycleLivedataCoreKtx = "2.7.0"
 sqlDelight = "2.0.0-alpha05"
 datastoreCore = "1.0.0"
 androidx-startup = "1.1.1"
+accompanist-permissions = "0.32.0"
 
 [libraries]
 androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastorePreferencesCore" }
@@ -53,7 +55,9 @@ sqlDelight-driver-native = { module = "app.cash.sqldelight:native-driver", versi
 sqlDelight-driver-sqljs = { module = "app.cash.sqldelight:sqljs-driver", version.ref = "sqlDelight" }
 sqlDelight-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
 androidx-datastore-core = { group = "androidx.datastore", name = "datastore-core", version.ref = "datastoreCore" }
-
+peekaboo-ui = { module = "io.github.onseok:peekaboo-ui", version.ref = "peekaboo" }
+peekaboo-image-picker = { module = "io.github.onseok:peekaboo-image-picker", version.ref = "peekaboo" }
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist-permissions" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }

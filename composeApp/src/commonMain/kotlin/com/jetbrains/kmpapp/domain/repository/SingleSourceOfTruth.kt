@@ -42,7 +42,6 @@ internal fun  singleSourceOfTruth (
     val localData =getLocalData()
     if ( localData.isNotEmpty()) {
         Napier.d("InLocalSSOt")
-
         emit(Response.Success(localData))
     } else {
         val remoteData = getResponse { getRemoteData() }

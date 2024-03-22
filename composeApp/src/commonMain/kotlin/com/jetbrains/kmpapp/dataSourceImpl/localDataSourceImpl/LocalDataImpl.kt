@@ -17,7 +17,7 @@ class localDataImpl(
     override fun getCharacterByIDFromLocal(id: Long): Flow<Result?> {
        return sharedDatabase.getItemById(id)!!
     }
-
+//
     override suspend fun putCharatcersToLocal(list: List<Result?>) {
        sharedDatabase.addItems(list)
     }
